@@ -1,0 +1,69 @@
+# Sample Patente Italiana vocabulary
+# Format: italiano,farsi,categoria,note
+# Lines starting with # are ignored
+
+# === Road signs / علائم راهنمایی ===
+segnale,علامت,علائم,
+divieto,منع، ممنوعیت,علائم,
+obbligo,الزام,علائم,
+pericolo,خطر,علائم,
+stop,توقف,علائم,
+precedenza,حق تقدم,علائم,
+dare precedenza,رعایت حق تقدم,علائم,
+senso unico,یک‌طرفه,علائم,
+senso vietato,ورود ممنوع,علائم,
+divieto di sosta,توقف ممنوع,علائم,
+divieto di transito,عبور ممنوع,علائم,
+
+# === Rules / قوانین ===
+sorpasso,سبقت,قوانین,
+limite di velocità,محدودیت سرعت,قوانین,
+distanza di sicurezza,فاصله ایمن,قوانین,
+multa,جریمه,قوانین,
+patente,گواهینامه,قوانین,
+revisione,معاینه فنی,قوانین,
+assicurazione,بیمه,قوانین,
+infrazione,تخلف,قوانین,
+sanzione,جریمه (مجازات),قوانین,
+
+# === Roads / جاده‌ها ===
+autostrada,بزرگراه,جاده‌ها,
+strada,جاده,جاده‌ها,
+carreggiata,مسیر عبور,جاده‌ها,
+corsia,لاین,جاده‌ها,
+marciapiede,پیاده‌رو,جاده‌ها,
+incrocio,تقاطع,جاده‌ها,
+rotatoria,میدان (دوربرگردان),جاده‌ها,
+curva,پیچ,جاده‌ها,
+galleria,تونل,جاده‌ها,
+pendenza,شیب,جاده‌ها,
+ponte,پل,جاده‌ها,
+
+# === Vehicle / وسیله نقلیه ===
+veicolo,وسیله نقلیه,وسیله نقلیه,
+autoveicolo,خودرو,وسیله نقلیه,
+motocicletta,موتورسیکلت,وسیله نقلیه,
+camion,کامیون,وسیله نقلیه,
+freno,ترمز,وسیله نقلیه,
+frenata,ترمز کردن,وسیله نقلیه,
+volante,فرمان,وسیله نقلیه,
+pneumatico,لاستیک,وسیله نقلیه,
+specchietto,آینه بغل,وسیله نقلیه,
+faro,چراغ جلو,وسیله نقلیه,
+
+# === Safety / ایمنی ===
+cintura di sicurezza,کمربند ایمنی,ایمنی,
+casco,کلاه ایمنی,ایمنی,
+airbag,کیسه هوا,ایمنی,
+triangolo,مثلث خطر,ایمنی,
+giubbotto catarifrangente,جلیقه شب‌نما,ایمنی,
+
+# === General / عمومی ===
+guida,رانندگی,عمومی,
+guidatore,راننده,عمومی,
+pedone,عابر پیاده,عمومی,
+ciclista,دوچرخه‌سوار,عمومی,
+parcheggio,پارکینگ,عمومی,
+benzina,بنزین,عمومی,
+gasolio,گازوئیل,عمومی,
+distributore,پمپ بنزین,عمومی,

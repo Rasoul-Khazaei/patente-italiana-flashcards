@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patente Flashcards — فلش‌کارت پاتنته</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf7f2;
+    --bg-card: #ffffff;
+    --ink: #1a1612;
+    --ink-soft: #6b6358;
+    --accent: #c8472f;
+    --accent-soft: #f4dfd8;
+    --success: #2d6a4f;
+    --success-soft: #d8e8df;
+    --warn: #b8860b;
+    --warn-soft: #f5ead0;
+    --line: #e8e2d6;
+    --shadow: 0 2px 8px rgba(26, 22, 18, 0.04), 0 12px 32px rgba(26, 22, 18, 0.06);
+    --radius: 14px;
+    --radius-sm: 8px;
+  }
+
+  [data-theme="dark"] {
+    --bg: #15120e;
+    --bg-card: #1f1b15;
+    --ink: #f4ede0;
+    --ink-soft: #a89c87;
+    --accent: #e87056;
+    --accent-soft: #3a221c;
+    --success: #6cb88a;
+    --success-soft: #1e2e25;
+    --warn: #d4a648;
+    --warn-soft: #2e2516;
+    --line: #2e281e;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.2), 0 12px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Vazirmatn', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    line-height: 1.6;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
+
+  /* Header */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: 28px;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-dot {
+    width: 12px; height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  .header-actions { display: flex; gap: 8px; align-items: center; }
+
+  .icon-btn {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink);
+    width: 40px; height: 40px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .icon-btn:hover { background: var(--accent-soft); border-color: var(--accent); }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 24px;
+    background: var(--bg-card);
+    padding: 6px;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    overflow-x: auto;
+  }
+
+  .tab {
+    flex: 1;
+    min-width: max-content;
+    padding: 10px 16px;
+    background: transparent;
+    border: none;
+    color: var(--ink-soft);
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .tab.active { background: var(--accent); color: white; }
+  .tab:not(.active):hover { color: var(--ink); background: var(--accent-soft); }
+
+  /* Stats */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .stat {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 16px;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* Cards / Panels */
+  .panel {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+  }
+
+  .panel-title {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* Buttons */
+  .btn {
+    padding: 10px 18px;
+    border-radius: var(--radius-sm);
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-primary { background: var(--accent); color: white; }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(200, 71, 47, 0.3); }
+  .btn-secondary { background: var(--bg); color: var(--ink); border: 1px solid var(--line); }
+  .btn-secondary:hover { border-color: var(--accent); }
+  .btn-success { background: var(--success); color: white; }
+  .btn-danger { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* Inputs */
+  input[type="text"], textarea, select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 14px;
+    transition: border-color 0.2s;
+  }
+  input[type="text"]:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  textarea { resize: vertical; min-height: 100px; font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .form-row-full { grid-column: 1 / -1; }
+
+  label {
+    display: block;
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Flashcard Study Mode */
+  .study-stage {
+    perspective: 1000px;
+    min-height: 360px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0;
+  }
+
+  .flashcard {
+    width: 100%;
+    max-width: 520px;
+    height: 320px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+  }
+  .flashcard.flipped { transform: rotateY(180deg); }
+
+  .flashcard-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-shadow: var(--shadow);
+  }
+  .flashcard-back { transform: rotateY(180deg); }
+
+  .card-category {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-soft);
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+
+  .card-word {
+    font-family: 'Fraunces', serif;
+    font-size: 42px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+  .card-translation {
+    font-size: 28px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .card-hint {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 24px;
+    font-style: italic;
+  }
+
+  .study-controls {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+
+  .progress-bar {
+    height: 4px;
+    background: var(--line);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    transition: width 0.3s;
+  }
+
+  /* Vocabulary List */
+  .filter-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .filter-bar select, .filter-bar input { flex: 1; min-width: 180px; }
+
+  .word-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+  }
+
+  .word-item {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .word-item:hover { border-color: var(--accent); }
+  .word-item.known { background: var(--success-soft); border-color: var(--success); }
+  .word-item.in-quiz::after {
+    content: '✦';
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    color: var(--warn);
+    font-size: 14px;
+  }
+
+  .word-it { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 600; }
+  .word-fa { color: var(--accent); margin-top: 4px; font-size: 15px; }
+  .word-meta { font-size: 11px; color: var(--ink-soft); margin-top: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .word-actions { display: flex; gap: 6px; margin-top: 10px; }
+  .word-actions .btn { padding: 4px 10px; font-size: 12px; }
+
+  /* Quiz */
+  .quiz-question {
+    text-align: center;
+    padding: 24px 16px;
+  }
+  .quiz-statement {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 600;
+    margin: 16px 0 24px;
+    line-height: 1.4;
+  }
+  .quiz-options { display: flex; gap: 12px; justify-content: center; }
+  .quiz-option {
+    padding: 14px 32px;
+    font-size: 16px;
+    font-weight: 600;
+    min-width: 120px;
+  }
+  .quiz-feedback {
+    margin-top: 20px;
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    display: none;
+  }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct { background: var(--success-soft); color: var(--success); }
+  .quiz-feedback.wrong { background: var(--accent-soft); color: var(--accent); }
+
+  /* Modal */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 16px;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 24px;
+    max-width: 540px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .modal-title {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+
+  /* Tab Content */
+  .tab-content { display: none; animation: fadeIn 0.3s; }
+  .tab-content.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .empty {
+    text-align: center;
+    padding: 48px 16px;
+    color: var(--ink-soft);
+  }
+  .empty-icon { font-size: 48px; margin-bottom: 12px; }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 11px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-radius: 999px;
+    font-weight: 500;
+  }
+
+  .help-text {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 6px;
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .container { padding: 16px 12px; }
+    .logo { font-size: 22px; }
+    .card-word { font-size: 32px; }
+    .card-translation { font-size: 22px; }
+    .form-row { grid-template-columns: 1fr; }
+    .quiz-statement { font-size: 22px; }
+  }
+
+  /* Loading */
+  .spinner {
+    display: inline-block;
+    width: 14px; height: 14px;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="logo">
+      <span class="logo-dot"></span>
+      <span>Patente FC</span>
+    </div>
+    <div class="header-actions">
+      <button class="icon-btn" id="themeToggle" title="Theme">🌙</button>
+      <button class="icon-btn" id="exportBtn" title="Export data">⬇</button>
+      <button class="icon-btn" id="importDataBtn" title="Import data">⬆</button>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab active" data-tab="study">📚 مطالعه</button>
+    <button class="tab" data-tab="quiz">✦ کوییز</button>
+    <button class="tab" data-tab="vocab">📖 واژگان</button>
+    <button class="tab" data-tab="add">+ افزودن</button>
+    <button class="tab" data-tab="settings">⚙ تنظیمات</button>
+  </nav>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num" id="statTotal">0</div><div class="stat-label">کل واژگان</div></div>
+    <div class="stat"><div class="stat-num" id="statKnown">0</div><div class="stat-label">آموخته</div></div>
+    <div class="stat"><div class="stat-num" id="statDue">0</div><div class="stat-label">برای مرور</div></div>
+    <div class="stat"><div class="stat-num" id="statQuiz">0</div><div class="stat-label">در کوییز</div></div>
+  </div>
+
+  <!-- STUDY TAB -->
+  <div class="tab-content active" id="tab-study">
+    <div class="panel">
+      <div class="progress-bar"><div class="progress-fill" id="studyProgress" style="width: 0%"></div></div>
+      <div class="study-stage">
+        <div class="flashcard" id="flashcard" onclick="flipCard()">
+          <div class="flashcard-face flashcard-front">
+            <div class="card-category" id="cardCategory">—</div>
+            <div class="card-word" id="cardWord">برای شروع، واژه اضافه کن</div>
+            <div class="card-hint">برای دیدن ترجمه کلیک کن</div>
+          </div>
+          <div class="flashcard-face flashcard-back">
+            <div class="card-category" id="cardCategoryBack">—</div>
+            <div class="card-translation" id="cardTranslation">—</div>
+            <div class="card-hint">برای کارت بعدی روی دکمه‌ها بزن</div>
+          </div>
+        </div>
+      </div>
+      <div class="study-controls">
+        <button class="btn btn-danger" onclick="rateCard('hard')">سخت بود</button>
+        <button class="btn btn-secondary" onclick="rateCard('good')">خوب</button>
+        <button class="btn btn-success" onclick="rateCard('easy')">آسون بود</button>
+      </div>
+      <div class="study-controls" style="margin-top: 8px;">
+        <button class="btn btn-secondary" onclick="skipCard()">رد کن</button>
+        <button class="btn btn-secondary" onclick="resetStudy()">شروع از اول</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ TAB -->
+  <div class="tab-content" id="tab-quiz">
+    <div class="panel" id="quizSetupPanel">
+      <div class="panel-title">✦ کوییز درست/غلط</div>
+      <p style="color: var(--ink-soft); margin-bottom: 16px;">سوالات رو از یکی از روش‌های زیر اضافه کن:</p>
+
+      <div style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
+        <button class="btn btn-secondary" onclick="showQuizModal('manual')">+ افزودن دستی</button>
+        <button class="btn btn-secondary" onclick="showQuizModal('file')">⬆ آپلود فایل</button>
+        <button class="btn btn-secondary" onclick="showQuizModal('ai')">✦ تولید با AI</button>
+        <button class="btn btn-primary" id="startQuizBtn" onclick="startQuiz()">شروع کوییز</button>
+      </div>
+
+      <div style="font-size: 13px; color: var(--ink-soft); margin-bottom: 8px;">
+        <span class="badge"><span id="quizCount">0</span> سوال</span>
+      </div>
+
+      <div id="quizQuestionsList" style="max-height: 300px; overflow-y: auto;"></div>
+    </div>
+
+    <div class="panel" id="quizPlayPanel" style="display: none;">
+      <div class="progress-bar"><div class="progress-fill" id="quizProgress" style="width: 0%"></div></div>
+      <div class="quiz-question">
+        <div style="color: var(--ink-soft); font-size: 13px;">آیا این جمله درست است؟</div>
+        <div class="quiz-statement" id="quizStatement">—</div>
+        <div class="quiz-options">
+          <button class="btn btn-success quiz-option" onclick="answerQuiz(true)">درست</button>
+          <button class="btn btn-danger quiz-option" onclick="answerQuiz(false)">غلط</button>
+        </div>
+        <div class="quiz-feedback" id="quizFeedback"></div>
+      </div>
+      <div style="text-align: center; margin-top: 16px;">
+        <button class="btn btn-secondary" onclick="endQuiz()">پایان کوییز</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VOCAB TAB -->
+  <div class="tab-content" id="tab-vocab">
+    <div class="panel">
+      <div class="filter-bar">
+        <input type="text" id="searchInput" placeholder="🔍 جستجو..." oninput="renderVocabList()">
+        <select id="categoryFilter" onchange="renderVocabList()">
+          <option value="">همه دسته‌ها</option>
+        </select>
+        <select id="statusFilter" onchange="renderVocabList()">
+          <option value="">همه وضعیت‌ها</option>
+          <option value="known">آموخته</option>
+          <option value="learning">در حال یادگیری</option>
+        </select>
+      </div>
+      <div id="vocabList" class="word-list"></div>
+    </div>
+  </div>
+
+  <!-- ADD TAB -->
+  <div class="tab-content" id="tab-add">
+    <div class="panel">
+      <div class="panel-title">+ افزودن دستی</div>
+      <div class="form-row">
+        <div>
+          <label>کلمه ایتالیایی *</label>
+          <input type="text" id="newWordIt" placeholder="es. precedenza">
+        </div>
+        <div>
+          <label>ترجمه فارسی *</label>
+          <input type="text" id="newWordFa" placeholder="مثلاً: حق تقدم">
+        </div>
+      </div>
+      <div class="form-row">
+        <div>
+          <label>دسته‌بندی</label>
+          <input type="text" id="newWordCat" placeholder="مثلاً: علائم راهنمایی">
+        </div>
+        <div>
+          <label>توضیحات (اختیاری)</label>
+          <input type="text" id="newWordNote" placeholder="مثال یا یادداشت">
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="addWord()">افزودن</button>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">⬆ ورود گروهی (CSV)</div>
+      <p style="color: var(--ink-soft); font-size: 13px; margin-bottom: 12px;">
+        فرمت: <code>italiano,farsi,categoria,note</code> (هر خط یک کلمه)
+      </p>
+      <textarea id="csvInput" placeholder="precedenza,حق تقدم,علائم راهنمایی,
+incrocio,تقاطع,علائم راهنمایی,
+sorpasso,سبقت,قوانین رانندگی,"></textarea>
+      <div style="display: flex; gap: 8px; margin-top: 12px;">
+        <button class="btn btn-primary" onclick="importCSV()">وارد کن</button>
+        <button class="btn btn-secondary" onclick="document.getElementById('csvFile').click()">یا از فایل</button>
+        <input type="file" id="csvFile" accept=".csv,.txt" style="display:none" onchange="importCSVFile(event)">
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">✦ استخراج با AI</div>
+      <p style="color: var(--ink-soft); font-size: 13px; margin-bottom: 12px;">
+        متن ایتالیایی رو بچسبون. AI کلمات مهم پاتنته رو پیدا و ترجمه می‌کنه.
+      </p>
+      <div style="margin-bottom: 12px;">
+        <label>کلید API انتروپیک</label>
+        <input type="text" id="apiKey" placeholder="sk-ant-..." autocomplete="off">
+        <div class="help-text">کلیدت فقط تو مرورگر خودت ذخیره میشه. هیچ‌جا فرستاده نمیشه جز API انتروپیک.</div>
+      </div>
+      <textarea id="aiInput" placeholder="متن ایتالیایی رو اینجا بذار..."></textarea>
+      <button class="btn btn-primary" onclick="extractWithAI()" style="margin-top: 12px;" id="aiBtn">
+        <span id="aiBtnText">استخراج کن</span>
+      </button>
+      <div id="aiResult" style="margin-top: 16px;"></div>
+    </div>
+  </div>
+
+  <!-- SETTINGS TAB -->
+  <div class="tab-content" id="tab-settings">
+    <div class="panel">
+      <div class="panel-title">⚙ تنظیمات</div>
+      <div style="margin-bottom: 16px;">
+        <label>فاصله مرور (روز) — آسون</label>
+        <input type="text" id="intervalEasy" value="4">
+      </div>
+      <div style="margin-bottom: 16px;">
+        <label>فاصله مرور (روز) — خوب</label>
+        <input type="text" id="intervalGood" value="2">
+      </div>
+      <div style="margin-bottom: 16px;">
+        <label>فاصله مرور (روز) — سخت</label>
+        <input type="text" id="intervalHard" value="1">
+      </div>
+      <button class="btn btn-primary" onclick="saveSettings()">ذخیره</button>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">🗑 مدیریت داده</div>
+      <p style="color: var(--ink-soft); font-size: 13px; margin-bottom: 12px;">
+        همه داده‌ها فقط روی همین مرورگر ذخیره میشن.
+      </p>
+      <button class="btn btn-danger" onclick="clearAll()">حذف همه داده‌ها</button>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">ℹ درباره</div>
+      <p style="color: var(--ink-soft);">
+        Patente Italiana Flashcards — نرم‌افزار رایگان و متن‌باز برای آمادگی آزمون گواهینامه رانندگی ایتالیایی، مخصوص فارسی‌زبانان.
+      </p>
+      <p style="color: var(--ink-soft); margin-top: 8px; font-size: 13px;">
+        <a href="https://github.com/Rasoul-Khazaei/patente-italiana-flashcards" style="color: var(--accent);">GitHub Repository</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Quiz Modal -->
+<div class="modal-overlay" id="quizModal">
+  <div class="modal">
+    <div class="modal-title" id="quizModalTitle">افزودن سوال کوییز</div>
+    <div id="quizModalBody"></div>
+    <div style="display: flex; gap: 8px; margin-top: 16px;">
+      <button class="btn btn-primary" id="quizModalSave">ذخیره</button>
+      <button class="btn btn-secondary" onclick="closeQuizModal()">بستن</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
